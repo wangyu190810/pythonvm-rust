@@ -123,8 +123,14 @@ impl<'a, I> Iterator for InstructionDecoder<I> where I: Iterator<Item=&'a u8> {
             self.pending_nops -= 1;
             return Some(Instruction::Nop)
         };
+        println!("{:?}", &self.pending_nops);
+                // self.pending_nops += 2;
         self.bytestream.next().map(|opcode| {
             match *opcode {
+                0 => {
+                    println!("Opcode is not  supported: {}", opcode);
+                    Instruction::Nop
+                },
                 1 => Instruction::PopTop,
                 4 => Instruction::DupTop,
                 25 => Instruction::BinarySubscr,
